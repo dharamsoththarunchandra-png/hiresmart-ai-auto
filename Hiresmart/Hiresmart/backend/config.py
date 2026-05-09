@@ -6,6 +6,14 @@ from dotenv import load_dotenv
 base_dir = Path(__file__).resolve().parent
 load_dotenv(base_dir / '.env')
 
+
+def _fix_db_url(url: str) -> str:
+    """Render gives postgres:// but SQLAlchemy 1.4+ requires postgresql://."""
+    if url and url.startswith('postgres://'):
+        return url.replace('postgres://', 'postgresql://', 1)
+    return url
+
+
 class Config:
     """Base configuration for HireSmart."""
     SECRET_KEY = os.environ.get('SECRET_KEY', 'change-me-in-production')
@@ -31,17 +39,27 @@ class Config:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER')
 
+
 class DevelopmentConfig(Config):
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', f'sqlite:///{base_dir / "hiresmart_dev.db"}')
+    SQLALCHEMY_DATABASE_URI = _fix_db_url(
+        os.environ.get('DATABASE_URL', f'sqlite:///{base_dir / "hiresmart_dev.db"}')
+    )
+
 
 class ProductionConfig(Config):
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/hiresmart')
+    SQLALCHEMY_DATABASE_URI = _fix_db_url(
+        os.environ.get('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/hiresmart')
+    )
+
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///:memory:')
+    SQLALCHEMY_DATABASE_URI = _fix_db_url(
+        os.environ.get('DATABASE_URL', 'sqlite:///:memory:')
+    )
+
 
 config = {
     'development': DevelopmentConfig,

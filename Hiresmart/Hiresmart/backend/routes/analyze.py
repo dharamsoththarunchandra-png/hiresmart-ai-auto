@@ -1,7 +1,7 @@
 import os
+import shutil
 import tempfile
 from flask import Blueprint, request
-from flask_jwt_extended import jwt_required, get_jwt_identity
 from services.resume_parser import extract_text_from_file, extract_skills_from_text, safe_filename
 from services.ai_matcher import get_match_score, summarize_match
 from utils.responses import success, error
@@ -27,58 +27,62 @@ def screen_resumes():
     results = []
     tmp_dir = tempfile.mkdtemp()
 
-    for f in files:
-        if not f.filename:
-            continue
-
-        ext = os.path.splitext(f.filename)[1].lower()
-        if ext not in ('.pdf', '.doc', '.docx'):
-            results.append({
-                'filename': f.filename,
-                'error': 'Unsupported file type. Use PDF or DOCX.'
-            })
-            continue
-
-        safe_name = safe_filename(f.filename)
-        tmp_path = os.path.join(tmp_dir, safe_name)
-        f.save(tmp_path)
-
-        try:
-            resume_text = extract_text_from_file(tmp_path)
-            if not resume_text.strip():
-                results.append({'filename': f.filename, 'error': 'Could not extract text from file.'})
+    try:
+        for f in files:
+            if not f.filename:
                 continue
 
-            candidate_skills = extract_skills_from_text(resume_text)
-            job_skills = extract_skills_from_text(job_description)
+            ext = os.path.splitext(f.filename)[1].lower()
+            if ext not in ('.pdf', '.doc', '.docx'):
+                results.append({
+                    'filename': f.filename,
+                    'error': 'Unsupported file type. Use PDF or DOCX.'
+                })
+                continue
 
-            match_score = get_match_score(resume_text, candidate_skills, job_description, job_skills)
-            summary = summarize_match(candidate_skills, job_skills)
+            safe_name = safe_filename(f.filename)
+            tmp_path = os.path.join(tmp_dir, safe_name)
+            f.save(tmp_path)
 
-            # Classification
-            if match_score >= 70:
-                classification = 'Qualified'
-            elif match_score >= 40:
-                classification = 'Partially Qualified'
-            else:
-                classification = 'Not Qualified'
+            try:
+                resume_text = extract_text_from_file(tmp_path)
+                if not resume_text.strip():
+                    results.append({'filename': f.filename, 'error': 'Could not extract text from file.'})
+                    continue
 
-            results.append({
-                'filename': f.filename,
-                'match_score': round(match_score, 1),
-                'classification': classification,
-                'candidate_skills': candidate_skills,
-                'matched_skills': summary['matched_skills'],
-                'missing_skills': summary['missing_skills'],
-                'skill_score': summary['skill_score'],
-                'resume_preview': resume_text[:300] + '...' if len(resume_text) > 300 else resume_text
-            })
+                candidate_skills = extract_skills_from_text(resume_text)
+                job_skills = extract_skills_from_text(job_description)
 
-        except Exception as e:
-            results.append({'filename': f.filename, 'error': str(e)})
-        finally:
-            if os.path.exists(tmp_path):
-                os.remove(tmp_path)
+                match_score = get_match_score(resume_text, candidate_skills, job_description, job_skills)
+                summary = summarize_match(candidate_skills, job_skills)
+
+                # Classification
+                if match_score >= 70:
+                    classification = 'Qualified'
+                elif match_score >= 40:
+                    classification = 'Partially Qualified'
+                else:
+                    classification = 'Not Qualified'
+
+                results.append({
+                    'filename': f.filename,
+                    'match_score': round(match_score, 1),
+                    'classification': classification,
+                    'candidate_skills': candidate_skills,
+                    'matched_skills': summary['matched_skills'],
+                    'missing_skills': summary['missing_skills'],
+                    'skill_score': summary['skill_score'],
+                    'resume_preview': resume_text[:300] + '...' if len(resume_text) > 300 else resume_text
+                })
+
+            except Exception as e:
+                results.append({'filename': f.filename, 'error': str(e)})
+            finally:
+                if os.path.exists(tmp_path):
+                    os.remove(tmp_path)
+
+    finally:
+        shutil.rmtree(tmp_dir, ignore_errors=True)
 
     # Sort by match_score descending
     results.sort(key=lambda x: x.get('match_score', -1), reverse=True)

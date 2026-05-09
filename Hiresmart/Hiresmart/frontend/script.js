@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData();
             formData.append('file', file);
 
-            const endpoint = type === 'resume' ? 'http://localhost:5000/upload/resume' : 'http://localhost:5000/upload/batch';
+            const endpoint = type === 'resume' ? '/upload/resume' : '/upload/batch';
 
             try {
                 alert(`Uploading ${type} file... Please wait.`); // Simple loading indicator

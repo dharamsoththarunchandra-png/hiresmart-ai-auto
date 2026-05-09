@@ -528,7 +528,7 @@
                 formData.append('resumes', resumeInput.files[i]);
             }
 
-            fetch('http://localhost:5000/analyze/screen', {
+            fetch('/analyze/screen', {
                 method: 'POST',
                 body: formData
             })

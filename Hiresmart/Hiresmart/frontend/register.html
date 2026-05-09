@@ -153,7 +153,7 @@
                 const payload = { first_name, last_name, email, password, role };
                 if (role === 'recruiter') payload.company_name = company_name;
 
-                const res = await fetch('http://localhost:5000/auth/register', {
+                const res = await fetch('/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)

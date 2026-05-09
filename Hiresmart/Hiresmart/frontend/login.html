@@ -248,14 +248,6 @@
 
         .checkbox-label input { accent-color: hsl(245,80%,55%); }
 
-        .forgot-link {
-            color: hsl(245,80%,55%);
-            font-weight: 500;
-            font-size: 0.85rem;
-        }
-
-        .forgot-link:hover { text-decoration: underline; }
-
         .btn-login {
             width: 100%;
             padding: 0.85rem;
@@ -429,7 +421,6 @@
                         <label class="checkbox-label">
                             <input type="checkbox" id="cand-remember"> Remember me
                         </label>
-                        <a href="forgot-password.html" class="forgot-link">Forgot password?</a>
                     </div>
                     <button type="submit" class="btn-login">
                         <i class="fas fa-sign-in-alt"></i> Sign In as Candidate
@@ -481,7 +472,6 @@
                         <label class="checkbox-label">
                             <input type="checkbox" id="rec-remember"> Remember me
                         </label>
-                        <a href="forgot-password.html" class="forgot-link">Forgot password?</a>
                     </div>
                     <button type="submit" class="btn-login" style="background: linear-gradient(135deg, hsl(245,80%,58%), hsl(220,80%,45%));">
                         <i class="fas fa-sign-in-alt"></i> Sign In as Recruiter
@@ -555,7 +545,7 @@
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
 
         try {
-            const res = await fetch('http://localhost:5000/auth/login', {
+            const res = await fetch('/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password, role: 'candidate' })
@@ -594,7 +584,7 @@
         btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing in...';
 
         try {
-            const res = await fetch('http://localhost:5000/auth/login', {
+            const res = await fetch('/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password, role: 'recruiter', company })
