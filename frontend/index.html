@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HireSmart | AI-Powered Resume Screening System</title>
+    <meta name="description"
+        content="Automate resume screening with HireSmart's NLP-powered AI system. Compare resumes with job descriptions, extract skills, calculate match scores, and rank candidates instantly.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">Hire<span class="text-gradient">Smart</span></a>
+
+            <nav class="nav">
+                <ul class="nav-list">
+                    <li><a href="#features" class="nav-link">Features</a></li>
+                    <li><a href="#how-it-works" class="nav-link">How it Works</a></li>
+                    <li><a href="#benefits" class="nav-link">Benefits</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <a href="dashboard.html" class="btn btn-secondary">Log In</a>
+                <a href="dashboard.html" class="btn btn-primary">Get Started</a>
+            </div>
+
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero reveal">
+            <div class="hero-bg-glow"></div>
+            <div class="hero-bg-glow secondary-glow"></div>
+            <div class="container hero-container hero-centered">
+                <div class="hero-content">
+                    <span class="badge">⚡ Powered by: NLP & AI APIs</span>
+                    <h1 class="hero-title">Automate Resume <br /><span class="text-gradient">Screening Intelligently.</span></h1>
+                    <p class="hero-subtitle">Organizations receive hundreds of resumes for each opening. HireSmart uses advanced NLP and AI-based APIs to automatically analyze, classify, and rank candidates - eliminating manual screening bottlenecks while reducing human bias.</p>
+
+                    <div class="hero-buttons">
+                        <a href="dashboard.html" class="btn btn-primary btn-lg">Start Screening Resumes <i
+                                class="fas fa-arrow-right"></i></a>
+                        <a href="#how-it-works" class="btn btn-secondary btn-lg">See How It Works</a>
+                    </div>
+
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number">80%</span>
+                            <span class="stat-label">Time Saved</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-number">500+</span>
+                            <span class="stat-label">Resumes/Min</span>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <span class="stat-number">95%</span>
+                            <span class="stat-label">Accuracy</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Marquee -->
+        <section class="marquee">
+            <div class="marquee-content">
+                <p>TRUSTED BY LEADING RECRUITMENT TEAMS</p>
+                <div class="marquee-logos">
+                    <i class="fab fa-google"></i>
+                    <i class="fab fa-microsoft"></i>
+                    <i class="fab fa-apple"></i>
+                    <i class="fab fa-amazon"></i>
+                    <i class="fab fa-facebook"></i>
+                    <i class="fab fa-spotify"></i>
+                    <i class="fab fa-slack"></i>
+                    <i class="fab fa-google"></i>
+                    <i class="fab fa-microsoft"></i>
+                    <i class="fab fa-apple"></i>
+                    <i class="fab fa-amazon"></i>
+                    <i class="fab fa-facebook"></i>
+                    <i class="fab fa-spotify"></i>
+                    <i class="fab fa-slack"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="features section-padding reveal">
+            <div class="container">
+                <div class="section-header text-center">
+                    <h2 class="section-title">Core <span class="text-gradient">Capabilities</span></h2>
+                    <p class="section-subtitle">Comprehensive resume screening powered by NLP and AI-based APIs to automate and optimize your hiring process.</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon icon-bg-1"><i class="fas fa-file-alt"></i></div>
+                        <h3>Information Extraction</h3>
+                        <p>Advanced NLP automatically extracts key information: skills, experience, education, certifications, and qualifications from every resume.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon icon-bg-2"><i class="fas fa-chart-bar"></i></div>
+                        <h3>Intelligent Matching</h3>
+                        <p>AI APIs compute match scores by comparing resume data against job requirements. Identify skill gaps and qualifications alignment instantly.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon icon-bg-3"><i class="fas fa-tags"></i></div>
+                        <h3>Smart Classification</h3>
+                        <p>Resumes are automatically classified as Suitable, Partially Suitable, or Not Suitable based on match scores and requirements analysis.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="how-it-works section-padding reveal">
+            <div class="container">
+                <div class="section-header text-center">
+                    <h2 class="section-title">How <span class="text-gradient">It Works</span></h2>
+                    <p class="section-subtitle">A 5-step intelligent process to screen hundreds of resumes efficiently and eliminate human bias</p>
+                </div>
+
+                <div class="steps-container">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Upload & Input</h3>
+                            <p>Upload resumes (PDF, DOCX) in batch and enter detailed job requirements. Support for multiple file formats and bulk processing.</p>
+                            <div class="step-icon"><i class="fas fa-file-upload"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>NLP Extraction</h3>
+                            <p>Advanced NLP techniques extract and parse resume information: skills, experience, education, certifications, and other key details.</p>
+                            <div class="step-icon"><i class="fas fa-cogs"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Compute Match Score</h3>
+                            <p>AI-based APIs analyze resume data against job requirements and compute intelligent match scores based on skill alignment and qualification fit.</p>
+                            <div class="step-icon"><i class="fas fa-chart-line"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>Smart Classification</h3>
+                            <p>Resumes are automatically classified as Suitable, Partially Suitable, or Not Suitable based on match scores and job requirements.</p>
+                            <div class="step-icon"><i class="fas fa-tags"></i></div>
+                        </div>
+                    </div>
+
+                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
+
+                    <div class="step-item">
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h3>Review & Shortlist</h3>
+                            <p>View ranked candidates with detailed analysis. Filters reduce human bias and help recruiters quickly shortlist the most relevant candidates.</p>
+                            <div class="step-icon"><i class="fas fa-trophy"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits Section -->
+        <section id="benefits" class="benefits-section section-padding reveal">
+            <div class="container">
+                <div class="section-header text-center">
+                    <h2 class="section-title">Why <span class="text-gradient">Choose HireSmart?</span></h2>
+                    <p class="section-subtitle">Transform your recruitment process with intelligent automation</p>
+                </div>
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-icon"><i class="fas fa-bolt"></i></div>
+                        <h3>Improved Efficiency</h3>
+                        <p>Eliminate time-consuming manual screening. Process hundreds of resumes in minutes instead of hours.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon"><i class="fas fa-equals"></i></div>
+                        <h3>Reduced Bias</h3>
+                        <p>Data-driven evaluation based on qualifications only. Objective scoring removes personal prejudices from the hiring process.</p>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-icon"><i class="fas fa-target"></i></div>
+                        <h3>Better Candidates</h3>
+                        <p>Shortlist only the most relevant and qualified candidates. Ensure top talent reaches your hiring team faster.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section section-padding reveal">
+            <div class="container">
+                <div class="cta-box">
+                    <div class="cta-content">
+                        <h2>Automate Your Resume Screening Today</h2>
+                        <p>Harness the power of AI and NLP to streamline recruiting, reduce bias, and find the best candidates faster than ever.</p>
+                        <a href="dashboard.html" class="btn btn-white btn-lg">Start Screening Now</a>
+                    </div>
+                    <div class="cta-decoration"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo footer-logo">Hire<span class="text-gradient">Smart</span></a>
+                    <p>Automate resume screening with AI-powered NLP. Compare resumes to job descriptions, extract skills, calculate match scores, and find top candidates instantly.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Features</h4>
+                    <ul>
+                        <li><a href="#">Resume Analysis</a></li>
+                        <li><a href="#">Skill Extraction</a></li>
+                        <li><a href="#">Match Scoring</a></li>
+                        <li><a href="#">Candidate Ranking</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Resume Best Practices</a></li>
+                        <li><a href="guide.html">Screening Guide</a></li>
+                        <li><a href="#">Case Studies</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 HireSmart Inc. All rights reserved.</p>
+                <div class="legal-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+
+</html>

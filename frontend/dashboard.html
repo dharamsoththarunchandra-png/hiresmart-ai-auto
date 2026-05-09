@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - HireSmart</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #F9FAFB; }
+        .top-nav {
+            position: fixed; top: 0; left: 0; width: 100%;
+            background: #fff; border-bottom: 1px solid #f3f4f6;
+            z-index: 1000; padding: 0.6rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+        }
+        .page-content { padding: 5.5rem 2rem 2rem; max-width: 1100px; margin: 0 auto; }
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 1.25rem; margin-bottom: 2rem; }
+        .stat-card { background:#fff; border-radius:1rem; padding:1.5rem; text-align:center; box-shadow:0 2px 8px rgba(0,0,0,0.05); }
+        .stat-icon { width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 0.75rem;font-size:1.25rem; }
+        .stat-num { font-size:2rem;font-weight:800;font-family:'Outfit',sans-serif;color:hsl(220,40%,10%); }
+        .stat-label { font-size:0.85rem;color:hsl(220,15%,45%);margin-top:0.25rem; }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navbar -->
+    <nav class="top-nav">
+        <a href="index.html" style="font-size:1.4rem;font-weight:800;font-family:'Outfit',sans-serif;color:hsl(220,40%,10%);text-decoration:none;">
+            Hire<span style="background:linear-gradient(135deg,hsl(245,80%,60%),hsl(160,85%,40%));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Smart</span>
+        </a>
+        <div style="position:relative;">
+            <button id="profileBtn" onclick="toggleProfileMenu()" style="display:flex;align-items:center;gap:0.6rem;background:#f3f4f6;border:none;border-radius:2rem;padding:0.45rem 1rem 0.45rem 0.5rem;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.875rem;font-weight:500;color:hsl(220,40%,10%);">
+                <span id="profileAvatar" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,hsl(245,80%,58%),hsl(160,85%,40%));display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.9rem;font-weight:700;flex-shrink:0;"><i class="fas fa-user"></i></span>
+                <span id="profileName">My Account</span>
+                <span id="roleBadge" style="font-size:0.7rem;padding:0.15rem 0.5rem;border-radius:1rem;background:rgba(79,70,229,0.1);color:hsl(245,80%,55%);font-weight:600;">—</span>
+                <i class="fas fa-chevron-down" style="font-size:0.7rem;color:#9ca3af;"></i>
+            </button>
+            <div id="profileMenu" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border-radius:0.75rem;box-shadow:0 12px 32px rgba(0,0,0,0.12);min-width:200px;z-index:999;overflow:hidden;border:1px solid #f3f4f6;">
+                <div style="padding:0.85rem 1rem;border-bottom:1px solid #f3f4f6;">
+                    <div id="menuName" style="font-weight:600;font-size:0.9rem;color:hsl(220,40%,10%);">My Account</div>
+                    <div id="menuEmail" style="font-size:0.78rem;color:#9ca3af;margin-top:2px;"></div>
+                </div>
+                <a href="analyze.html" style="display:flex;align-items:center;gap:0.6rem;padding:0.75rem 1rem;font-size:0.875rem;color:hsl(220,40%,10%);text-decoration:none;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='transparent'">
+                    <i class="fas fa-brain" style="color:hsl(245,80%,55%);width:16px;"></i> Analyze
+                </a>
+                <a href="#" onclick="logout()" style="display:flex;align-items:center;gap:0.6rem;padding:0.75rem 1rem;font-size:0.875rem;color:#ef4444;text-decoration:none;border-top:1px solid #f3f4f6;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
+                    <i class="fas fa-sign-out-alt" style="width:16px;"></i> Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Content -->
+    <div class="page-content">
+        <div class="welcome-banner reveal" style="margin-bottom:2rem;">
+            <div>
+                <h1>Welcome to HireSmart 👋</h1>
+                <p>Streamline your recruitment with AI-powered resume analysis and candidate matching.</p>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stat-grid reveal" id="stats-section">
+            <!-- Stats rendered by JS based on role -->
+        </div>
+
+        <!-- Candidate: Save Resume -->
+        <div id="candidate-resume-section" style="display:none;" class="reveal">
+            <div style="background:#fff;border-radius:1rem;padding:2rem;box-shadow:0 2px 8px rgba(0,0,0,0.05);margin-bottom:2rem;">
+                <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;margin-bottom:0.5rem;">
+                    <h3 style="font-family:'Outfit',sans-serif;margin:0;color:hsl(220,40%,10%);">
+                        <i class="fas fa-file-upload" style="color:hsl(245,80%,55%);margin-right:8px;"></i>Save Your Resume
+                    </h3>
+                    <!-- Storage indicator -->
+                    <div style="display:flex;align-items:center;gap:0.75rem;cursor:pointer;" onclick="toggleStoragePanel()" title="View storage details">
+                        <div style="width:120px;">
+                            <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#6b7280;margin-bottom:3px;">
+                                <span>Storage</span>
+                                <span id="storage-text">0 / 50 MB</span>
+                            </div>
+                            <div style="height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;">
+                                <div id="storage-bar" style="height:100%;width:0%;background:hsl(245,80%,55%);border-radius:3px;transition:width 0.4s ease;"></div>
+                            </div>
+                        </div>
+                        <i class="fas fa-info-circle" style="color:#9ca3af;font-size:0.9rem;"></i>
+                    </div>
+                </div>
+
+                <!-- Storage detail panel -->
+                <div id="storage-panel" style="display:none;background:#f9fafb;border-radius:0.75rem;padding:1rem;margin-bottom:1.25rem;border:1px solid #e5e7eb;">
+                    <h4 style="margin:0 0 0.75rem;font-size:0.9rem;color:hsl(220,40%,10%);">📦 Resume Storage Details</h4>
+                    <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:0.5rem;">
+                        <span style="color:#6b7280;">Used</span><span id="panel-used" style="font-weight:600;">0 MB</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:0.5rem;">
+                        <span style="color:#6b7280;">Available</span><span id="panel-available" style="font-weight:600;color:hsl(160,85%,35%);">50 MB</span>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:0.75rem;">
+                        <span style="color:#6b7280;">Total Quota</span><span style="font-weight:600;">50 MB</span>
+                    </div>
+                    <div style="height:8px;background:#e5e7eb;border-radius:4px;overflow:hidden;">
+                        <div id="panel-bar" style="height:100%;width:0%;border-radius:4px;transition:width 0.4s ease;"></div>
+                    </div>
+                    <div id="panel-files" style="margin-top:0.75rem;font-size:0.8rem;color:#6b7280;"></div>
+                </div>
+
+                <p style="color:hsl(220,15%,45%);font-size:0.9rem;margin-bottom:1.25rem;">Upload and save multiple resumes to your profile for job matching.</p>
+                <div id="resume-drop-area" ondrop="handleResumeDrop(event)" ondragover="event.preventDefault()" style="border:2px dashed #e0e7ff;border-radius:0.75rem;padding:2rem;text-align:center;cursor:pointer;transition:border-color 0.2s;" onclick="document.getElementById('candidate-resume-input').click()">
+                    <i class="fas fa-cloud-upload-alt" style="font-size:2rem;color:hsl(245,80%,55%);margin-bottom:0.75rem;display:block;"></i>
+                    <p style="margin:0;font-weight:500;color:hsl(220,40%,10%);">Drop resumes here or click to upload</p>
+                    <p style="margin:0.25rem 0 0;font-size:0.8rem;color:#9ca3af;">PDF, DOC, DOCX — multiple files allowed — total max 50MB</p>
+                    <input type="file" id="candidate-resume-input" hidden accept=".pdf,.doc,.docx" multiple onchange="saveResume(this)">
+                </div>
+                <div id="saved-resumes-list" style="margin-top:1rem;display:flex;flex-direction:column;gap:0.6rem;"></div>
+            </div>
+        </div>
+
+        <!-- Storage Full Popup -->
+        <div id="storage-full-popup" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;align-items:center;justify-content:center;">
+            <div style="background:#fff;border-radius:1.5rem;padding:2.5rem 2rem;max-width:380px;width:90%;text-align:center;box-shadow:0 24px 48px rgba(0,0,0,0.15);">
+                <div style="width:64px;height:64px;border-radius:50%;background:rgba(239,68,68,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;font-size:1.75rem;color:#ef4444;">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3 style="font-family:'Outfit',sans-serif;font-size:1.3rem;font-weight:700;color:hsl(220,40%,10%);margin-bottom:0.5rem;">Storage Full</h3>
+                <p style="color:hsl(220,15%,45%);font-size:0.9rem;margin-bottom:1.5rem;line-height:1.6;">Your resume storage is full (50MB limit). Please remove your existing resume before uploading a new one.</p>
+                <button onclick="document.getElementById('storage-full-popup').style.display='none'" style="width:100%;padding:0.8rem;background:linear-gradient(135deg,hsl(245,80%,58%),hsl(245,80%,48%));color:#fff;border:none;border-radius:0.6rem;font-family:'Inter',sans-serif;font-size:0.95rem;font-weight:600;cursor:pointer;">Got it</button>
+            </div>
+        </div>
+
+        <!-- Go to Analyze -->
+        <div class="reveal" style="text-align:center;margin-top:1rem;">
+            <a href="analyze.html" class="btn btn-primary btn-lg"><i class="fas fa-brain"></i> Start Analyzing Resumes</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+            localStorage.removeItem('name');
+            localStorage.removeItem('email');
+            localStorage.removeItem('company');
+            window.location.href = 'login.html';
+        }
+
+        function toggleProfileMenu() {
+            const menu = document.getElementById('profileMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!document.getElementById('profileBtn').contains(e.target)) {
+                document.getElementById('profileMenu').style.display = 'none';
+            }
+        });
+
+        const STORAGE_QUOTA = 50 * 1024 * 1024; // 50MB in bytes
+
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 MB';
+            return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+        }
+
+        function getStoredResumes() {
+            return JSON.parse(localStorage.getItem('saved_resumes') || '[]');
+        }
+
+        function saveStoredResumes(list) {
+            localStorage.setItem('saved_resumes', JSON.stringify(list));
+        }
+
+        function getUsedStorage() {
+            return getStoredResumes().reduce((sum, r) => sum + (r.size || 0), 0);
+        }
+
+        function updateStorageUI() {
+            const used = getUsedStorage();
+            const pct = Math.min((used / STORAGE_QUOTA) * 100, 100);
+            const barColor = pct >= 90 ? '#ef4444' : pct >= 70 ? '#f59e0b' : 'hsl(245,80%,55%)';
+
+            document.getElementById('storage-text').textContent = `${formatBytes(used)} / 50 MB`;
+            document.getElementById('storage-bar').style.width = pct + '%';
+            document.getElementById('storage-bar').style.background = barColor;
+            document.getElementById('panel-used').textContent = formatBytes(used);
+            document.getElementById('panel-available').textContent = formatBytes(Math.max(STORAGE_QUOTA - used, 0));
+            document.getElementById('panel-bar').style.width = pct + '%';
+            document.getElementById('panel-bar').style.background = barColor;
+
+            const resumes = getStoredResumes();
+            document.getElementById('panel-files').innerHTML = resumes.length
+                ? resumes.map(r => `📄 ${r.name} (${formatBytes(r.size)})`).join('<br>')
+                : 'No resumes saved.';
+        }
+
+        function toggleStoragePanel() {
+            const p = document.getElementById('storage-panel');
+            p.style.display = p.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function handleResumeDrop(e) {
+            e.preventDefault();
+            processFiles(Array.from(e.dataTransfer.files));
+        }
+
+        function saveResume(input) {
+            if (input.files.length) processFiles(Array.from(input.files));
+        }
+
+        function processFiles(files) {
+            const resumes = getStoredResumes();
+            const used = getUsedStorage();
+            let totalNew = files.reduce((s, f) => s + f.size, 0);
+
+            if (used + totalNew > STORAGE_QUOTA) {
+                document.getElementById('storage-full-popup').style.display = 'flex';
+                return;
+            }
+
+            files.forEach(file => {
+                // Skip duplicates by name
+                if (resumes.find(r => r.name === file.name)) return;
+                const blobUrl = URL.createObjectURL(file);
+                resumes.push({ name: file.name, size: file.size, blob: blobUrl });
+                sessionStorage.setItem('blob_' + file.name, blobUrl);
+            });
+
+            saveStoredResumes(resumes.map(r => ({ name: r.name, size: r.size })));
+            renderResumeList();
+            updateStorageUI();
+            document.getElementById('candidate-resume-input').value = '';
+        }
+
+        function renderResumeList() {
+            const resumes = getStoredResumes();
+            const list = document.getElementById('saved-resumes-list');
+            list.innerHTML = resumes.map(r => {
+                const blob = sessionStorage.getItem('blob_' + r.name) || '#';
+                return `<div style="display:flex;align-items:center;gap:0.75rem;padding:0.75rem 1rem;background:rgba(16,185,129,0.08);border-radius:0.6rem;">
+                    <i class="fas fa-check-circle" style="color:hsl(160,85%,35%);font-size:1rem;flex-shrink:0;"></i>
+                    <span style="font-size:0.875rem;font-weight:500;color:hsl(220,40%,10%);flex:1;">${r.name} <span style="color:#9ca3af;font-weight:400;">(${formatBytes(r.size)})</span></span>
+                    <a href="${blob}" download="${r.name}" style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.35rem 0.75rem;background:hsl(245,80%,55%);color:#fff;border-radius:0.5rem;font-size:0.78rem;font-weight:600;text-decoration:none;">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                    <button onclick="removeResume('${r.name}')" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:0.85rem;padding:0.35rem;"><i class="fas fa-trash"></i></button>
+                </div>`;
+            }).join('');
+        }
+
+        function removeResume(name) {
+            let resumes = getStoredResumes();
+            resumes = resumes.filter(r => r.name !== name);
+            saveStoredResumes(resumes);
+            const blob = sessionStorage.getItem('blob_' + name);
+            if (blob) { URL.revokeObjectURL(blob); sessionStorage.removeItem('blob_' + name); }
+            renderResumeList();
+            updateStorageUI();
+        }
+
+        (function() {
+            const role = localStorage.getItem('role') || '';
+            const name = localStorage.getItem('name') || 'My Account';
+            const company = localStorage.getItem('company') || '';
+            const email = localStorage.getItem('email') || '';
+            const displayName = role === 'recruiter' && company ? company : name;
+            const label = role === 'recruiter' ? 'Recruiter' : role === 'candidate' ? 'Candidate' : '—';
+            const color = role === 'recruiter' ? 'hsl(245,80%,55%)' : 'hsl(160,85%,35%)';
+            const bg = role === 'recruiter' ? 'rgba(79,70,229,0.1)' : 'rgba(16,185,129,0.1)';
+
+            document.getElementById('profileName').textContent = displayName;
+            document.getElementById('menuName').textContent = displayName;
+            document.getElementById('menuEmail').textContent = email;
+            const badge = document.getElementById('roleBadge');
+            badge.textContent = label;
+            badge.style.color = color;
+            badge.style.background = bg;
+            document.getElementById('profileAvatar').innerHTML = `<span style="font-size:0.9rem;font-weight:700;">${displayName.charAt(0).toUpperCase()}</span>`;
+
+            // Render role-specific stats
+            const statsEl = document.getElementById('stats-section');
+            if (role === 'candidate') {
+                statsEl.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:rgba(79,70,229,0.1);color:hsl(245,80%,55%);"><i class="fas fa-file-alt"></i></div>
+                        <div class="stat-num">${localStorage.getItem('stat_uploaded') || '0'}</div>
+                        <div class="stat-label">Resumes Uploaded</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:rgba(245,158,11,0.1);color:hsl(35,95%,50%);"><i class="fas fa-chart-bar"></i></div>
+                        <div class="stat-num">${localStorage.getItem('stat_results') || '0'}</div>
+                        <div class="stat-label">Analysis Results</div>
+                    </div>`;
+                // Show resume upload section
+                document.getElementById('candidate-resume-section').style.display = 'block';
+                renderResumeList();
+                updateStorageUI();
+            } else {
+                statsEl.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:rgba(79,70,229,0.1);color:hsl(245,80%,55%);"><i class="fas fa-file-alt"></i></div>
+                        <div class="stat-num">${localStorage.getItem('stat_uploaded') || '0'}</div>
+                        <div class="stat-label">Resumes Uploaded</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:rgba(16,185,129,0.1);color:hsl(160,85%,35%);"><i class="fas fa-user-check"></i></div>
+                        <div class="stat-num">${localStorage.getItem('stat_qualified') || '0'}</div>
+                        <div class="stat-label">Qualified Candidates</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:rgba(245,158,11,0.1);color:hsl(35,95%,50%);"><i class="fas fa-chart-bar"></i></div>
+                        <div class="stat-num">${localStorage.getItem('stat_results') || '0'}</div>
+                        <div class="stat-label">Analysis Results</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:rgba(239,68,68,0.1);color:#ef4444;"><i class="fas fa-user-times"></i></div>
+                        <div class="stat-num">${localStorage.getItem('stat_rejected') || '0'}</div>
+                        <div class="stat-label">Not Qualified</div>
+                    </div>`;
+            }
+        })();
+    </script>
+</body>
+</html>

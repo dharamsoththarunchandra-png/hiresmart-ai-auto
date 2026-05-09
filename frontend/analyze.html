@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyze - HireSmart</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Top Navbar -->
+    <header style="position:fixed;top:0;left:0;width:100%;background:#fff;border-bottom:1px solid #f3f4f6;z-index:1000;padding:0.6rem 1.5rem;display:flex;align-items:center;justify-content:space-between;box-shadow:0 1px 8px rgba(0,0,0,0.05);">
+        <a href="index.html" style="font-size:1.4rem;font-weight:800;font-family:'Outfit',sans-serif;color:hsl(220,40%,10%);text-decoration:none;">Hire<span style="background:linear-gradient(135deg,hsl(245,80%,60%),hsl(160,85%,40%));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Smart</span></a>
+
+        <div style="position:relative;">
+            <button id="profileBtn" onclick="toggleProfileMenu()" style="display:flex;align-items:center;gap:0.6rem;background:#f3f4f6;border:none;border-radius:2rem;padding:0.45rem 1rem 0.45rem 0.5rem;cursor:pointer;font-family:'Inter',sans-serif;font-size:0.875rem;font-weight:500;color:hsl(220,40%,10%);">
+                <span id="profileAvatar" style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,hsl(245,80%,58%),hsl(160,85%,40%));display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.9rem;font-weight:700;flex-shrink:0;"><i class="fas fa-user"></i></span>
+                <span id="profileName">My Account</span>
+                <span id="roleBadge" style="font-size:0.7rem;padding:0.15rem 0.5rem;border-radius:1rem;background:rgba(79,70,229,0.1);color:hsl(245,80%,55%);font-weight:600;">—</span>
+                <i class="fas fa-chevron-down" style="font-size:0.7rem;color:#9ca3af;"></i>
+            </button>
+            <div id="profileMenu" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border-radius:0.75rem;box-shadow:0 12px 32px rgba(0,0,0,0.12);min-width:200px;z-index:999;overflow:hidden;border:1px solid #f3f4f6;">
+                <div style="padding:0.85rem 1rem;border-bottom:1px solid #f3f4f6;">
+                    <div id="menuName" style="font-weight:600;font-size:0.9rem;color:hsl(220,40%,10%);">My Account</div>
+                    <div id="menuEmail" style="font-size:0.78rem;color:#9ca3af;margin-top:2px;"></div>
+                </div>
+                <a href="dashboard.html" style="display:flex;align-items:center;gap:0.6rem;padding:0.75rem 1rem;font-size:0.875rem;color:hsl(220,40%,10%);text-decoration:none;" onmouseover="this.style.background='#f9fafb'" onmouseout="this.style.background='transparent'">
+                    <i class="fas fa-chart-bar" style="color:hsl(245,80%,55%);width:16px;"></i> Dashboard
+                </a>
+                <a href="#" onclick="logout()" style="display:flex;align-items:center;gap:0.6rem;padding:0.75rem 1rem;font-size:0.875rem;color:#ef4444;text-decoration:none;border-top:1px solid #f3f4f6;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
+                    <i class="fas fa-sign-out-alt" style="width:16px;"></i> Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div style="padding-top:5rem; padding-left:1.5rem; padding-right:1.5rem; max-width:1100px; margin:0 auto;">
+        <div class="dashboard-content" style="padding:1.5rem 0;">
+                <div class="welcome-banner reveal">
+                    <div>
+                        <h1>AI-Powered Analysis 🧠</h1>
+                        <p>Analyze resumes and job descriptions with advanced AI insights to find the perfect match.</p>
+                    </div>
+                </div>
+
+                <!-- Upload Resumes with Job Criteria -->
+                <div class="reveal" style="margin-bottom: 2rem;">
+                    <div class="card" style="padding: 2rem;">
+                        <h2 style="margin-top: 0; margin-bottom: 1.5rem; color: var(--dark);"><i class="fas fa-file-upload" style="margin-right: 10px; color: var(--primary);"></i>Upload Resumes</h2>
+                        <p style="color: var(--gray); margin-bottom: 1.5rem;">Upload candidate resumes and define your job criteria</p>
+                        
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                            <!-- Resumes Upload Section -->
+                            <div>
+                                <h4 style="margin-bottom: 1rem; color: var(--dark);"><i class="fas fa-file-pdf" style="margin-right: 8px; color: var(--primary);"></i>📄 Resumes</h4>
+                                <div class="upload-area" id="bulk-resume-upload" ondrop="handleBulkResumeDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" style="min-height: 200px;">
+                                    <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+                                    <h4>Drop resumes here or click to upload</h4>
+                                    <p style="color: var(--gray); font-size: 0.9rem;" id="upload-hint">Supports PDF, DOC, DOCX — only one file upload at once</p>
+                                    <input type="file" id="bulk-resume-input" hidden accept=".pdf,.doc,.docx" onchange="handleBulkResumeUpload(event)"/>
+                                    <button class="btn btn-primary" style="margin-top: 1rem;" onclick="document.getElementById('bulk-resume-input').click()">Select Files</button>
+                                    <div id="uploaded-files" style="margin-top: 1rem; text-align: left;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Job Criteria Section -->
+                            <div>
+                                <h4 style="margin-bottom: 1rem; color: var(--dark);"><i class="fas fa-bullseye" style="margin-right: 8px; color: var(--primary);"></i>🎯 Job Criteria</h4>
+                                <div style="display: flex; flex-direction: column; gap: 1rem;">
+                                    <div>
+                                        <label style="display: block; margin-bottom: 0.5rem; color: var(--dark); font-weight: 500;">Job Description</label>
+                                        <textarea id="job-desc" placeholder="Describe the role, responsibilities, and what you're looking for..." style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 4px; font-family: var(--font-body); height: 160px; resize: vertical;"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1rem;" onclick="screenResumesWithAI()">Screen Resumes with AI</button>
+                    </div>
+                </div>
+
+                <!-- Analyzer Cards -->
+                <!-- Resume Analyzer Section -->
+                <div class="analyzer-section reveal" id="resume-analysis-section" style="display: none;">
+                    <div class="card">
+                        <div class="card-header-flex">
+                            <h3><i class="fas fa-file-alt" style="margin-right: 10px; color: var(--primary);"></i>Resume Analyzer</h3>
+                            <button class="btn btn-sm btn-outline" onclick="toggleResumeAnalyzer()"><i class="fas fa-times"></i></button>
+                        </div>
+
+                        <div class="analyzer-content">
+                            <div class="analyzer-input-group">
+                                <div class="upload-area" id="resume-upload-area" ondrop="handleResumeDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <h4>Drag and drop your resume</h4>
+                                    <p>or click to browse</p>
+                                    <input type="file" id="resume-file-input" hidden accept=".pdf,.doc,.docx,.txt" onchange="handleResumeUpload(event)"/>
+                                    <button class="btn btn-secondary" onclick="document.getElementById('resume-file-input').click()">Select File</button>
+                                </div>
+
+                                <div class="resume-preview" id="resume-preview" style="display: none;">
+                                    <div class="preview-header">
+                                        <h4>Resume Content Preview</h4>
+                                        <button class="btn btn-sm btn-outline" onclick="clearResumePreview()">Clear</button>
+                                    </div>
+                                    <textarea id="resume-text" placeholder="Resume content will appear here..." style="width: 100%; height: 300px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Inter', sans-serif; resize: vertical;"></textarea>
+                                    <button class="btn btn-primary" style="margin-top: 15px; width: 100%;" onclick="analyzeResume()">Analyze Resume</button>
+                                </div>
+                            </div>
+
+                            <div id="resume-results" style="display: none; margin-top: 30px;">
+                                <h4 style="margin-bottom: 20px; color: var(--primary);"><i class="fas fa-check-circle" style="margin-right: 10px;"></i>Analysis Results</h4>
+                                
+                                <div class="results-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                                    <div class="result-card" style="background: rgba(102, 126, 234, 0.05); padding: 20px; border-radius: 8px; border-left: 4px solid var(--primary);">
+                                        <h5 style="margin: 0 0 15px 0; color: var(--primary);"><i class="fas fa-briefcase" style="margin-right: 8px;"></i>Skills Found</h5>
+                                        <div id="resume-skills" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                            <!-- Skills will be populated here -->
+                                        </div>
+                                    </div>
+
+                                    <div class="result-card" style="background: rgba(16, 185, 129, 0.05); padding: 20px; border-radius: 8px; border-left: 4px solid #10B981;">
+                                        <h5 style="margin: 0 0 15px 0; color: #10B981;"><i class="fas fa-star" style="margin-right: 8px;"></i>Experience Level</h5>
+                                        <div id="resume-experience" style="font-size: 16px; font-weight: 600; color: #10B981;">
+                                            <!-- Experience will be populated here -->
+                                        </div>
+                                    </div>
+
+                                    <div class="result-card" style="background: rgba(245, 158, 11, 0.05); padding: 20px; border-radius: 8px; border-left: 4px solid #F59E0B; grid-column: 1 / -1;">
+                                        <h5 style="margin: 0 0 15px 0; color: #F59E0B;"><i class="fas fa-lightbulb" style="margin-right: 8px;"></i>Summary</h5>
+                                        <p id="resume-summary" style="margin: 0; color: #555; line-height: 1.6;">
+                                            <!-- Summary will be populated here -->
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Job Description Analyzer Section -->
+                <div class="analyzer-section reveal" id="job-analysis-section" style="display: none;">
+                    <div class="card">
+                        <div class="card-header-flex">
+                            <h3><i class="fas fa-briefcase" style="margin-right: 10px; color: var(--primary);"></i>Job Description Analyzer</h3>
+                            <button class="btn btn-sm btn-outline" onclick="toggleJobAnalyzer()"><i class="fas fa-times"></i></button>
+                        </div>
+
+                        <div class="analyzer-content">
+                            <div class="analyzer-input-group">
+                                <div class="upload-area" id="job-upload-area" ondrop="handleJobDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <h4>Drag and drop job description</h4>
+                                    <p>or paste the content below</p>
+                                    <input type="file" id="job-file-input" hidden accept=".pdf,.doc,.docx,.txt" onchange="handleJobUpload(event)"/>
+                                    <button class="btn btn-secondary" onclick="document.getElementById('job-file-input').click()">Select File</button>
+                                </div>
+
+                                <div class="job-preview" id="job-preview" style="display: none;">
+                                    <div class="preview-header">
+                                        <h4>Job Description Content</h4>
+                                        <button class="btn btn-sm btn-outline" onclick="clearJobPreview()">Clear</button>
+                                    </div>
+                                    <textarea id="job-text" placeholder="Paste or upload job description here..." style="width: 100%; height: 300px; padding: 15px; border: 1px solid #ddd; border-radius: 8px; font-family: 'Inter', sans-serif; resize: vertical;"></textarea>
+                                    <button class="btn btn-primary" style="margin-top: 15px; width: 100%;" onclick="analyzeJobDescription()">Analyze Job Description</button>
+                                </div>
+                            </div>
+
+                            <div id="job-results" style="display: none; margin-top: 30px;">
+                                <h4 style="margin-bottom: 20px; color: var(--primary);"><i class="fas fa-check-circle" style="margin-right: 10px;"></i>Analysis Results</h4>
+                                
+                                <div class="results-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px;">
+                                    <div class="result-card" style="background: rgba(102, 126, 234, 0.05); padding: 20px; border-radius: 8px; border-left: 4px solid var(--primary);">
+                                        <h5 style="margin: 0 0 15px 0; color: var(--primary);"><i class="fas fa-tasks" style="margin-right: 8px;"></i>Required Skills</h5>
+                                        <div id="job-skills" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                            <!-- Required skills will be populated here -->
+                                        </div>
+                                    </div>
+
+                                    <div class="result-card" style="background: rgba(167, 139, 250, 0.05); padding: 20px; border-radius: 8px; border-left: 4px solid #A78BFA;">
+                                        <h5 style="margin: 0 0 15px 0; color: #A78BFA;"><i class="fas fa-graduation-cap" style="margin-right: 8px;"></i>Experience Required</h5>
+                                        <div id="job-experience" style="font-size: 16px; font-weight: 600; color: #A78BFA;">
+                                            <!-- Required experience will be populated here -->
+                                        </div>
+                                    </div>
+
+                                    <div class="result-card" style="background: rgba(245, 158, 11, 0.05); padding: 20px; border-radius: 8px; border-left: 4px solid #F59E0B; grid-column: 1 / -1;">
+                                        <h5 style="margin: 0 0 15px 0; color: #F59E0B;"><i class="fas fa-align-left" style="margin-right: 8px;"></i>Key Responsibilities</h5>
+                                        <div id="job-responsibilities" style="color: #555;">
+                                            <!-- Key responsibilities will be populated here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Candidate Matcher Section -->
+                <div class="analyzer-section reveal" id="candidate-analysis-section" style="display: none;">
+                    <div class="card">
+                        <div class="card-header-flex">
+                            <h3><i class="fas fa-user-check" style="margin-right: 10px; color: var(--primary);"></i>Candidate Matcher</h3>
+                            <button class="btn btn-sm btn-outline" onclick="toggleCandidateMatcher()"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="analyzer-content">
+                            <p style="margin-bottom: 1rem; color: var(--gray);">Step 1: Upload candidate resume. Step 2: Upload job requirement document. Step 3: Click analyze to see match score.</p>
+                            <div class="analyzer-input-group" style="gap:1.5rem; flex-wrap:wrap;">
+                                <div class="upload-area" id="cand-resume-upload" ondrop="handleCandResumeDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <h4>Candidate Resume</h4>
+                                    <p>Drag & drop or select file</p>
+                                    <input type="file" id="cand-resume-file" hidden accept=".pdf,.doc,.docx,.txt" onchange="handleCandResumeUpload(event)"/>
+                                    <button class="btn btn-secondary" onclick="document.getElementById('cand-resume-file').click()">Select File</button>
+                                </div>
+                                <div class="upload-area" id="cand-job-upload" ondrop="handleCandJobDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <h4>Job Requirement</h4>
+                                    <p>Drag & drop or select file</p>
+                                    <input type="file" id="cand-job-file" hidden accept=".pdf,.doc,.docx,.txt" onchange="handleCandJobUpload(event)"/>
+                                    <button class="btn btn-secondary" onclick="document.getElementById('cand-job-file').click()">Select File</button>
+                                </div>
+                            </div>
+
+                            <div id="cand-results" style="display:none; margin-top:30px;">
+                                <h4 style="margin-bottom:20px; color: var(--primary);"><i class="fas fa-check-circle" style="margin-right:10px;"></i>Match Results</h4>
+                                <p id="cand-match-score" style="font-size:1.25rem; font-weight:600;color: var(--primary);"></p>
+                                <div id="cand-feedback" style="color:#555;"></div>
+                            </div>
+
+                            <button class="btn btn-primary" style="margin-top:20px;" onclick="analyzeCandidateMatch()">Analyze Candidate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <script src="script.js"></script>
+    <script>
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+            window.location.href = 'login.html';
+        }
+
+        function toggleProfileMenu() {
+            const menu = document.getElementById('profileMenu');
+            menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!document.getElementById('profileBtn').contains(e.target)) {
+                document.getElementById('profileMenu').style.display = 'none';
+            }
+        });
+
+        (function() {
+            const role = localStorage.getItem('role') || '';
+            const name = localStorage.getItem('name') || 'My Account';
+            const company = localStorage.getItem('company') || '';
+            const email = localStorage.getItem('email') || '';
+            const displayName = role === 'recruiter' && company ? company : name;
+            const label = role === 'recruiter' ? 'Recruiter' : role === 'candidate' ? 'Candidate' : '—';
+            const color = role === 'recruiter' ? 'hsl(245,80%,55%)' : 'hsl(160,85%,35%)';
+            const bg = role === 'recruiter' ? 'rgba(79,70,229,0.1)' : 'rgba(16,185,129,0.1)';
+
+            document.getElementById('profileName').textContent = displayName;
+            document.getElementById('menuName').textContent = displayName;
+            document.getElementById('menuEmail').textContent = email;
+            const badge = document.getElementById('roleBadge');
+            badge.textContent = label;
+            badge.style.color = color;
+            badge.style.background = bg;
+            document.getElementById('profileAvatar').innerHTML = `<span style="font-size:0.9rem;font-weight:700;">${displayName.charAt(0).toUpperCase()}</span>`;
+
+            // Role-based upload config
+            const input = document.getElementById('bulk-resume-input');
+            const hint = document.getElementById('upload-hint');
+            if (role === 'recruiter') {
+                input.setAttribute('multiple', '');
+                hint.textContent = 'Supports PDF, DOC, DOCX — upload bulk resumes';
+            } else {
+                input.removeAttribute('multiple');
+                hint.textContent = 'Supports PDF, DOC, DOCX — only one file upload at once';
+            }
+        })();
+
+        // Toggle Resume Analyzer
+        function toggleResumeAnalyzer() {
+            const section = document.getElementById('resume-analysis-section');
+            section.style.display = section.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Toggle Job Analyzer
+        function toggleJobAnalyzer() {
+            const section = document.getElementById('job-analysis-section');
+            section.style.display = section.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Handle Resume File Upload
+        function handleResumeUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('resume-text').value = e.target.result;
+                    document.getElementById('resume-upload-area').style.display = 'none';
+                    document.getElementById('resume-preview').style.display = 'block';
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        // Handle Resume Drag and Drop
+        function handleResumeDrop(event) {
+            event.preventDefault();
+            handleDragLeave(event);
+            const file = event.dataTransfer.files[0];
+            if (file) {
+                const input = document.getElementById('resume-file-input');
+                input.files = event.dataTransfer.files;
+                handleResumeUpload({ target: input });
+            }
+        }
+
+        // Clear Resume Preview
+        function clearResumePreview() {
+            document.getElementById('resume-text').value = '';
+            document.getElementById('resume-upload-area').style.display = 'block';
+            document.getElementById('resume-preview').style.display = 'none';
+            document.getElementById('resume-results').style.display = 'none';
+        }
+
+        // Analyze Resume - send to backend
+        function analyzeResume() {
+            const text = document.getElementById('resume-text').value;
+            if (!text.trim()) {
+                alert('Please enter resume content');
+                return;
+            }
+            fetch('/api/analyzeResume', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            })
+            .then(r => r.json())
+            .then(data => {
+                displayResumeResults(data.skills, data.experience, data.summary);
+            })
+            .catch(err => alert('Error analyzing resume'));
+        }
+
+        // Display Resume Results
+        function displayResumeResults(skills, experience, summary) {
+            document.getElementById('resume-skills').innerHTML = skills
+                .map(skill => `<span class="skill-tag" style="background: var(--primary); color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">${skill}</span>`)
+                .join('');
+            document.getElementById('resume-experience').textContent = experience;
+            document.getElementById('resume-summary').textContent = summary;
+            document.getElementById('resume-results').style.display = 'block';
+        }
+
+        // Handle Job File Upload
+        function handleJobUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('job-text').value = e.target.result;
+                    document.getElementById('job-upload-area').style.display = 'none';
+                    document.getElementById('job-preview').style.display = 'block';
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        // Handle Job Drag and Drop
+        function handleJobDrop(event) {
+            event.preventDefault();
+            handleDragLeave(event);
+            const file = event.dataTransfer.files[0];
+            if (file) {
+                const input = document.getElementById('job-file-input');
+                input.files = event.dataTransfer.files;
+                handleJobUpload({ target: input });
+            }
+        }
+
+        // Clear Job Preview
+        function clearJobPreview() {
+            document.getElementById('job-text').value = '';
+            document.getElementById('job-upload-area').style.display = 'block';
+            document.getElementById('job-preview').style.display = 'none';
+            document.getElementById('job-results').style.display = 'none';
+        }
+
+        // Analyze Job Description - send to backend
+        function analyzeJobDescription() {
+            const text = document.getElementById('job-text').value;
+            if (!text.trim()) {
+                alert('Please enter job description');
+                return;
+            }
+            fetch('/api/analyzeJob', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            })
+            .then(r => r.json())
+            .then(data => {
+                displayJobResults(data.skills, data.experience, data.responsibilities);
+            })
+            .catch(err => alert('Error analyzing job description'));
+        }
+
+        // Display Job Results
+        function displayJobResults(skills, experience, responsibilities) {
+            document.getElementById('job-skills').innerHTML = skills
+                .map(skill => `<span class="skill-tag" style="background: var(--primary); color: white; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 500;">${skill}</span>`)
+                .join('');
+            document.getElementById('job-experience').textContent = experience;
+            document.getElementById('job-responsibilities').innerHTML = `<ul style="padding-left: 20px; margin: 0;">
+                ${responsibilities.map(resp => `<li style="margin-bottom: 10px; color: #555;">${resp}</li>`).join('')}
+            </ul>`;
+            document.getElementById('job-results').style.display = 'block';
+        }
+
+        // Handle Drag Over
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.currentTarget.style.background = 'rgba(102, 126, 234, 0.1)';
+            event.currentTarget.style.borderColor = 'var(--primary)';
+        }
+
+        // Handle Drag Leave
+        function handleDragLeave(event) {
+            event.currentTarget.style.background = '';
+            event.currentTarget.style.borderColor = '';
+        }
+
+        // Bulk Resume Upload
+        function handleBulkResumeUpload(event) {
+            const files = event.target.files;
+            if (files.length > 0) {
+                let fileList = '<div style="margin-top: 1rem;"><h5 style="margin: 0 0 0.5rem 0; color: var(--dark);">Uploaded Files:</h5>';
+                for (let i = 0; i < Math.min(files.length, 10); i++) {
+                    fileList += `<div style="padding: 0.5rem; background: rgba(102, 126, 234, 0.05); border-radius: 4px; margin-bottom: 0.5rem; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="color: var(--dark); font-size: 0.9rem;"><i class="fas fa-file"></i> ${files[i].name}</span>
+                        <span style="color: var(--gray); font-size: 0.8rem;">${(files[i].size / 1024).toFixed(1)} KB</span>
+                    </div>`;
+                }
+                if (files.length > 10) fileList += `<p style="color: var(--gray); font-size: 0.9rem; margin: 0.5rem 0 0 0;">+ ${files.length - 10} more files</p>`;
+                fileList += '</div>';
+                document.getElementById('uploaded-files').innerHTML = fileList;
+            }
+        }
+
+        function handleBulkResumeDrop(event) {
+            event.preventDefault();
+            handleDragLeave(event);
+            const files = event.dataTransfer.files;
+            const input = document.getElementById('bulk-resume-input');
+            input.files = files;
+            handleBulkResumeUpload({ target: input });
+        }
+
+        // Skill management
+        let skills = [];
+        function addSkill() {
+            const input = document.getElementById('skill-input');
+            const skill = input.value.trim();
+            if (skill && !skills.includes(skill)) {
+                skills.push(skill);
+                input.value = '';
+                renderSkills();
+            }
+        }
+
+        function removeSkill(skill) {
+            skills = skills.filter(s => s !== skill);
+            renderSkills();
+        }
+
+        function renderSkills() {
+            const container = document.getElementById('skills-container');
+            container.innerHTML = skills.map(skill => 
+                `<span style="background: var(--primary); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.85rem; display: flex; align-items: center; gap: 0.5rem;">
+                    ${skill}
+                    <button style="background: none; border: none; color: white; cursor: pointer; font-weight: bold;" onclick="removeSkill('${skill}')">&times;</button>
+                </span>`
+            ).join('');
+        }
+
+        // Screen resumes with AI
+        function screenResumesWithAI() {
+            const jobDesc = document.getElementById('job-desc').value.trim();
+            const resumeInput = document.getElementById('bulk-resume-input');
+
+            if (!jobDesc) {
+                alert('Please enter a job description.');
+                return;
+            }
+            if (!resumeInput.files.length) {
+                alert('Please upload at least one resume.');
+                return;
+            }
+
+            const btn = document.querySelector('[onclick="screenResumesWithAI()"]');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+
+            const formData = new FormData();
+            formData.append('job_description', jobDesc);
+            for (let i = 0; i < resumeInput.files.length; i++) {
+                formData.append('resumes', resumeInput.files[i]);
+            }
+
+            fetch('/analyze/screen', {
+                method: 'POST',
+                body: formData
+            })
+            .then(r => r.json())
+            .then(data => {
+                btn.disabled = false;
+                btn.innerHTML = 'Screen Resumes with AI';
+                if (data.status === 'error') { alert(data.message); return; }
+                renderResults(data.data);
+                // Update dashboard stats
+                const prev = parseInt(localStorage.getItem('stat_uploaded') || '0');
+                localStorage.setItem('stat_uploaded', prev + data.data.total);
+                localStorage.setItem('stat_qualified', data.data.qualified_count);
+                localStorage.setItem('stat_rejected', data.data.not_qualified_count);
+                localStorage.setItem('stat_results', data.data.total);
+            })
+            .catch(err => {
+                btn.disabled = false;
+                btn.innerHTML = 'Screen Resumes with AI';
+                alert('Error connecting to server. Make sure the backend is running.');
+            });
+        }
+
+        function renderResults(data) {
+            let existing = document.getElementById('screening-results');
+            if (existing) existing.remove();
+
+            const colorMap = { 'Qualified': '#10B981', 'Partially Qualified': '#F59E0B', 'Not Qualified': '#EF4444' };
+            const bgMap   = { 'Qualified': 'rgba(16,185,129,0.08)', 'Partially Qualified': 'rgba(245,158,11,0.08)', 'Not Qualified': 'rgba(239,68,68,0.08)' };
+
+            let html = `
+            <div id="screening-results" style="margin-top:2rem;">
+                <div style="background:#fff;border-radius:1rem;padding:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:1.5rem;">
+                    <h3 style="font-family:'Outfit',sans-serif;margin-bottom:1rem;color:hsl(220,40%,10%);">
+                        <i class="fas fa-chart-bar" style="color:hsl(245,80%,55%);margin-right:8px;"></i>Screening Summary
+                    </h3>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;">
+                        <div style="text-align:center;padding:1rem;background:rgba(79,70,229,0.06);border-radius:0.75rem;">
+                            <div style="font-size:1.75rem;font-weight:800;font-family:'Outfit',sans-serif;">${data.total}</div>
+                            <div style="font-size:0.8rem;color:#6b7280;">Total Screened</div>
+                        </div>
+                        <div style="text-align:center;padding:1rem;background:rgba(16,185,129,0.08);border-radius:0.75rem;">
+                            <div style="font-size:1.75rem;font-weight:800;font-family:'Outfit',sans-serif;color:#10B981;">${data.qualified_count}</div>
+                            <div style="font-size:0.8rem;color:#6b7280;">Qualified</div>
+                        </div>
+                        <div style="text-align:center;padding:1rem;background:rgba(245,158,11,0.08);border-radius:0.75rem;">
+                            <div style="font-size:1.75rem;font-weight:800;font-family:'Outfit',sans-serif;color:#F59E0B;">${data.partial_count}</div>
+                            <div style="font-size:0.8rem;color:#6b7280;">Partial Match</div>
+                        </div>
+                        <div style="text-align:center;padding:1rem;background:rgba(239,68,68,0.08);border-radius:0.75rem;">
+                            <div style="font-size:1.75rem;font-weight:800;font-family:'Outfit',sans-serif;color:#EF4444;">${data.not_qualified_count}</div>
+                            <div style="font-size:0.8rem;color:#6b7280;">Not Qualified</div>
+                        </div>
+                    </div>
+                </div>`;
+
+            data.results.forEach((r, i) => {
+                if (r.error) {
+                    html += `<div style="background:#fff;border-radius:1rem;padding:1.25rem;margin-bottom:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.05);border-left:4px solid #EF4444;">
+                        <strong>${r.filename}</strong> — <span style="color:#EF4444;">${r.error}</span></div>`;
+                    return;
+                }
+                const color = colorMap[r.classification];
+                const bg = bgMap[r.classification];
+                html += `
+                <div style="background:#fff;border-radius:1rem;padding:1.5rem;margin-bottom:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.05);border-left:4px solid ${color};">
+                    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;margin-bottom:1rem;">
+                        <div>
+                            <span style="font-weight:700;font-size:1rem;font-family:'Outfit',sans-serif;">#${i+1} ${r.filename}</span>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:0.75rem;">
+                            <span style="font-size:1.5rem;font-weight:800;font-family:'Outfit',sans-serif;color:${color};">${r.match_score}%</span>
+                            <span style="padding:0.3rem 0.75rem;border-radius:2rem;font-size:0.78rem;font-weight:600;background:${bg};color:${color};">${r.classification}</span>
+                        </div>
+                    </div>
+                    <div style="background:#f9fafb;border-radius:0.5rem;height:8px;margin-bottom:1rem;overflow:hidden;">
+                        <div style="height:100%;width:${r.match_score}%;background:${color};border-radius:0.5rem;transition:width 1s ease;"></div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;font-size:0.85rem;">
+                        <div>
+                            <strong style="color:#374151;">✅ Matched Skills</strong>
+                            <div style="margin-top:0.4rem;display:flex;flex-wrap:wrap;gap:0.3rem;">
+                                ${r.matched_skills.length ? r.matched_skills.map(s => `<span style="background:rgba(16,185,129,0.1);color:#059669;padding:0.2rem 0.5rem;border-radius:0.4rem;font-size:0.75rem;">${s}</span>`).join('') : '<span style="color:#9ca3af;">None detected</span>'}
+                            </div>
+                        </div>
+                        <div>
+                            <strong style="color:#374151;">❌ Missing Skills</strong>
+                            <div style="margin-top:0.4rem;display:flex;flex-wrap:wrap;gap:0.3rem;">
+                                ${r.missing_skills.length ? r.missing_skills.map(s => `<span style="background:rgba(239,68,68,0.1);color:#DC2626;padding:0.2rem 0.5rem;border-radius:0.4rem;font-size:0.75rem;">${s}</span>`).join('') : '<span style="color:#9ca3af;">None</span>'}
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+            });
+
+            html += '</div>';
+            document.querySelector('.dashboard-content').insertAdjacentHTML('beforeend', html);
+            document.getElementById('screening-results').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Candidate matcher toggling
+        function toggleCandidateMatcher() {
+            const section = document.getElementById('candidate-analysis-section');
+            section.style.display = section.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Candidate resume upload
+        function handleCandResumeUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('cand-resume-upload').style.display = 'none';
+                    document.getElementById('cand-resume-content')?.remove();
+                    const textarea = document.createElement('textarea');
+                    textarea.id = 'cand-resume-content';
+                    textarea.style.width = '100%';
+                    textarea.style.height = '150px';
+                    textarea.style.marginTop = '10px';
+                    textarea.value = e.target.result;
+                    event.target.parentElement.appendChild(textarea);
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        function handleCandResumeDrop(event) {
+            event.preventDefault();
+            handleDragLeave(event);
+            const file = event.dataTransfer.files[0];
+            if (file) {
+                const input = document.getElementById('cand-resume-file');
+                input.files = event.dataTransfer.files;
+                handleCandResumeUpload({ target: input });
+            }
+        }
+
+        // Candidate job requirement upload
+        function handleCandJobUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('cand-job-upload').style.display = 'none';
+                    document.getElementById('cand-job-content')?.remove();
+                    const textarea = document.createElement('textarea');
+                    textarea.id = 'cand-job-content';
+                    textarea.style.width = '100%';
+                    textarea.style.height = '150px';
+                    textarea.style.marginTop = '10px';
+                    textarea.value = e.target.result;
+                    event.target.parentElement.appendChild(textarea);
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        function handleCandJobDrop(event) {
+            event.preventDefault();
+            handleDragLeave(event);
+            const file = event.dataTransfer.files[0];
+            if (file) {
+                const input = document.getElementById('cand-job-file');
+                input.files = event.dataTransfer.files;
+                handleCandJobUpload({ target: input });
+            }
+        }
+
+        // Analyze candidate match
+        function analyzeCandidateMatch() {
+            const resumeTextEl = document.getElementById('cand-resume-content');
+            const jobTextEl = document.getElementById('cand-job-content');
+            if (!resumeTextEl || !jobTextEl || !resumeTextEl.value.trim() || !jobTextEl.value.trim()) {
+                alert('Please upload both resume and job requirement');
+                return;
+            }
+            fetch('/api/matchCandidate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ resumeText: resumeTextEl.value, jobText: jobTextEl.value })
+            })
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('cand-match-score').textContent = data.matchScore + '% fit';
+                document.getElementById('cand-feedback').innerHTML = '<p>Common keywords: ' + data.keywords.join(', ') + '</p>';
+                document.getElementById('cand-results').style.display = 'block';
+            })
+            .catch(err => alert('Error matching candidate'));
+        }
+    </script>
+</body>
+</html>
