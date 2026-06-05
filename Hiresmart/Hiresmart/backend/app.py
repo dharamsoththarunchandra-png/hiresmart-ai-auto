@@ -9,14 +9,14 @@ from flask_mail import Mail
 
 mail = Mail()
 
-from .config import config
-from .database.db import db
-from .routes.auth import auth_bp
-from .routes.users import user_bp
-from .routes.jobs import job_bp
-from .routes.applications import applications_bp
-from .routes.upload import upload_bp
-from .routes.analyze import analyze_bp
+from config import config
+from database.db import db
+from routes.auth import auth_bp
+from routes.users import user_bp
+from routes.jobs import job_bp
+from routes.applications import applications_bp
+from routes.upload import upload_bp
+from routes.analyze import analyze_bp
 
 
 def create_app(config_name=None):
